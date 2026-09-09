@@ -1,0 +1,10 @@
+[project]
+name = "sequencer"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.2",
+    "sounddevice>=0.5.6",
+    "soundfile>=0.14.0",
+]
