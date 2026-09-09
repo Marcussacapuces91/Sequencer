@@ -1,6 +1,6 @@
-# 📘 **DRUM‑ASCII v1.3 — Spécification complète (synthèse)**
+# 📘 DRUM‑ASCII v1.3 — Spécification complète
 
-## 1. **Structure générale du fichier**
+## 1. Structure générale du fichier
 Un fichier DRUM‑ASCII v1.3 contient, dans cet ordre :
 
 1. **Entête** (métadonnées)
@@ -13,7 +13,7 @@ Les blocs 3 et 4 sont optionnels.
 
 ---
 
-## 2. **Entête**
+## 2. Entête
 Bloc simple, lignes `clé: valeur` :
 
 ```
@@ -27,7 +27,7 @@ Clés obligatoires : `FORMAT`, `TITLE`, `TEMPO`, `TIME`.
 
 ---
 
-## 3. **Sections**
+## 3. Sections
 Une section commence par :
 
 ```
@@ -38,7 +38,7 @@ Elle contient une liste ordonnée de mesures.
 
 ---
 
-## 4. **Mesures**
+## 4. Mesures
 Une mesure commence par :
 
 ```
@@ -66,7 +66,7 @@ BD: o - o - - - - -
 
 ---
 
-## 5. **Bloc INSTRUMENTS**
+## 5. Bloc INSTRUMENTS
 Bloc optionnel, placé **avant** le PLAYORDER.
 
 Syntaxe :
@@ -93,7 +93,7 @@ INSTRUMENTS:
 
 ---
 
-## 6. **Bloc PLAYORDER**
+## 6. Bloc PLAYORDER
 Bloc optionnel, placé **à la fin du fichier**.
 
 S’il est absent → ordre par défaut = ordre de découverte des sections.
@@ -132,42 +132,3 @@ INTRO*1, VERSE*4, CHORUS*2
 - Les noms doivent correspondre à des sections existantes.
 
 Le PLAYORDER est transformé en une **liste flattenée** de noms de sections.
-
----
-
-# 📦 **Résumé ultra‑compact (pour prompt futur)**
-
-```
-DRUM-ASCII v1.3 Specification:
-
-1. File structure:
-   - Header (FORMAT, TITLE, TEMPO, TIME)
-   - Sections with measures
-   - INSTRUMENTS block (optional)
-   - PLAYORDER block (optional, at end)
-
-2. Sections:
-   SECTION: <name>
-   MEASURE: <number>
-   ALIAS: symbol symbol symbol ...
-
-3. INSTRUMENTS:
-   INSTRUMENTS:
-     ALIAS = Name(param=val, ...)
-
-4. PLAYORDER grammar:
-   - NAME
-   - NAME*N
-   - [seq]*N
-   - (seq)*N
-   - seq := element (, element)*
-
-5. Default PLAYORDER:
-   If absent → order of appearance of sections.
-
-6. Constraints:
-   - ALIAS must match instruments (if INSTRUMENTS block exists)
-   - PLAYORDER names must match sections
-   - Patterns are space-separated symbols
-   - Subdivision = number of symbols
-```
