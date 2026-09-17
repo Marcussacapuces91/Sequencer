@@ -11,8 +11,6 @@ Un fichier DRUM‑ASCII v1.3 contient, dans cet ordre :
 Les blocs 1 et 2 sont obligatoires.  
 Les blocs 3 et 4 sont optionnels.
 
----
-
 ## 2. Entête
 Bloc simple, lignes `clé: valeur` :
 
@@ -25,8 +23,6 @@ TIME: <signature>
 
 Clés obligatoires : `FORMAT`, `TITLE`, `TEMPO`, `TIME`.
 
----
-
 ## 3. Sections
 Une section commence par :
 
@@ -35,8 +31,6 @@ SECTION: <nom>
 ```
 
 Elle contient une liste ordonnée de mesures.
-
----
 
 ## 4. Mesures
 Une mesure commence par :
@@ -64,8 +58,6 @@ BD: o - o - - - - -
 - La subdivision est déterminée par le **nombre de colonnes**.
 - Les alias doivent correspondre à des instruments définis dans le bloc INSTRUMENTS (si présent).
 
----
-
 ## 5. Bloc INSTRUMENTS
 Bloc optionnel, placé **avant** le PLAYORDER.
 
@@ -90,8 +82,6 @@ INSTRUMENTS:
 - `Name` est le nom de l’instrument logique.
 - Les paramètres sont passés au constructeur interne du moteur.
 - Les valeurs peuvent être : `int`, `float`, `string`.
-
----
 
 ## 6. Bloc PLAYORDER
 Bloc optionnel, placé **à la fin du fichier**.
