@@ -73,14 +73,21 @@ class Daughter:
             self._pos = end
             return chunk
 
-    def make_params(self, **params) -> Dict[str, Any]:
-        """
-        Fabrique un dict de paramètres pour un événement.
-        Les paramètres peuvent être spécialisés selon le type d'instrument.
-        Ex: gain, pitch, etc.
-        """
-        return params
+    # def make_params(self, **params) -> Dict[str, Any]:
+    #     """
+    #     Fabrique un dict de paramètres pour un événement.
+    #     Les paramètres peuvent être spécialisés selon le type d'instrument.
+    #     Ex: gain, pitch, etc.
+    #     """
+    #     return params
 
+    def __call__(self, **kwargs):
+        """
+        Si l'instance de Daughter est passée avec des paramètres, alors on retourne l'instance et ces paramètres.
+        :param kwargs: Liste des paramètres.
+        :return: Un tuple de l'instance et de ses paramètres.
+        """
+        return self, kwargs
 
 kick = Daughter()
 with soundfile.SoundFile(

@@ -68,7 +68,12 @@ class Sequencer:
         self._events = []
         # self._event_nb = 0
 
-    def add_note_event(self, daughter: Daughter, ts: int, params: Dict[str, Any] | None = None):
+    def add_note_event(self, daughter_param: Daughter|tuple, ts: int):
+        if isinstance(daughter_param, Daughter):
+            daughter = daughter_param
+            params = {}
+        else:
+            daughter, params = daughter_param
 
         channel = self._daughters.index(daughter)
 
@@ -77,18 +82,12 @@ class Sequencer:
             if ev.channel == channel and ev.ts == ts:
                 raise ValueError(f"Deux événements simultanés sur {daughter} au timestamp {ts}")
 
-        # Si aucun param → demander à la daughter ses paramètres par défaut.
-        if params is None:
-            params = daughter.make_params()
-
         ev = NoteEvent(
             ts=ts,
-            # order=self._event_nb,   # pour éviter les doublons d'ordre
             channel=channel,
             daughter=daughter,
             params=params
         )
-        # self._event_nb += 1
 
         heapq.heappush(self._events, ev)
 

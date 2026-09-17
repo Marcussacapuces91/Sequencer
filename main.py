@@ -1,6 +1,7 @@
 #
 # main.py
 #
+from smtplib import SMTPRecipientsRefused
 
 from daughters import Daughter, kick, tom, hi_hat
 from sequencer import Sequencer
@@ -9,48 +10,43 @@ if __name__ == '__main__':
 
     seq = Sequencer([hi_hat, tom, kick])
 
-    for i in range(0, seq.SR * 50, seq.SR * 4):
-        cpl = 0
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 0*seq.SR/4)) # 1
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 1*seq.SR/4)) # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 2*seq.SR/4)) # 2
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 3*seq.SR/4)) # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 4*seq.SR/4)) # 3
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 5*seq.SR/4)) # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 6*seq.SR/4)) # 4
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 7*seq.SR/4)) # &
+    frame = 0
+    BPM = 120
+    tps = (60/BPM) * seq.SR
 
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 2*seq.SR/4))
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 4*seq.SR/4), tom.make_params(gain=20))
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 6*seq.SR/4))
+    for i in range(4):
 
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 0*seq.SR/4))
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 3*seq.SR/4))
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 5*seq.SR/4))
+        # 1er couplet
+        for s in range(8):
+            seq.add_note_event(hi_hat, round(frame + s * tps / 2)) # 1, 1&, 2, 2&, 3, 3&, 4, 4&
 
-        cpl = 1
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 0 * seq.SR / 4))  # 1
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 1 * seq.SR / 4))  # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 2 * seq.SR / 4))  # 2
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 3 * seq.SR / 4))  # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 4 * seq.SR / 4))  # 3
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 5 * seq.SR / 4))  # &
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 6 * seq.SR / 4))  # 4
-        seq.add_note_event(hi_hat, round(i + cpl*seq.SR*2 + 7 * seq.SR / 4), hi_hat.make_params(gain=140))  # & (accent)
+        seq.add_note_event(tom, round(frame + 2*tps/2))   # 2
+        seq.add_note_event(tom(gain=20), round(frame + 4*tps/2)) # 3
+        seq.add_note_event(tom, round(frame + 6*tps/2))   # 4
 
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 2 * seq.SR / 4))  # 2
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 4 * seq.SR / 4), tom.make_params(gain=20))  # 3 accent
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 6 * seq.SR / 4))  # 4
+        seq.add_note_event(kick, round(frame + 0*tps/2))
+        seq.add_note_event(kick, round(frame + 3*tps/2))
+        seq.add_note_event(kick, round(frame + 5*tps/2))
+        frame += tps*4  # Mesure à 4/4
 
+        # 2ème couplet
+        for s in range(7):  # jusqu'à 4.
+            seq.add_note_event(hi_hat, round(frame + s*tps/2)) # 1
+        seq.add_note_event(hi_hat(gain=140), round(frame + 7 * tps/2))  # 4& (accent)
+
+        seq.add_note_event(tom, round(frame + 2*tps/2))  # 2
+        seq.add_note_event(tom(gain=20), round(frame + 4*tps/2))  # 3 accent
+        seq.add_note_event(tom, round(frame + 6*tps/2))  # 4
         # Petit break sur les deux dernières croches
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 7 * seq.SR / 4), tom.make_params(gain=30))
-        seq.add_note_event(tom, round(i + cpl*seq.SR*2 + 8 * seq.SR / 4), tom.make_params(gain=40))
+        seq.add_note_event(tom(gain=30), round(frame + 7*tps/2)) # 4&
+        seq.add_note_event(tom(gain=40), round(frame + 8*tps/2)) # 5
 
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 0 * seq.SR / 4))  # 1
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 2 * seq.SR / 4))  # 2 (nouveau)
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 3 * seq.SR / 4))  # 2&
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 5 * seq.SR / 4))  # 3&
-        seq.add_note_event(kick, round(i + cpl*seq.SR*2 + 7 * seq.SR / 4))  # 4&
+        seq.add_note_event(kick, round(frame + 0*tps/2))  # 1
+        seq.add_note_event(kick, round(frame + 2*tps/2))  # 2 (nouveau)
+        seq.add_note_event(kick, round(frame + 3*tps/2))  # 2&
+        seq.add_note_event(kick, round(frame + 5*tps/2))  # 3&
+        seq.add_note_event(kick, round(frame + 7*tps/2))  # 4&
+        frame += tps*4  # Mesure à 4/4
 
     try:
         seq.run()
